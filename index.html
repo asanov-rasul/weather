@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherNow — погода в твоём городе</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<!--
+  data-weather управляет цветом фона и анимацией.
+  Допустимые значения: clear-day, clear-night, cloudy, fog, rain, snow, storm
+  Меняй его из JavaScript:  document.body.dataset.weather = 'rain';
+-->
+<body data-weather="clear-day">
+
+  <!-- Декоративный фон (JS не нужен) -->
+  <div class="bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+  </div>
+
+  <main class="app">
+
+    <!-- ===== Шапка: логотип + поиск ===== -->
+    <header class="topbar">
+      <h1 class="logo">🌤️ WeatherNow</h1>
+
+      <form id="searchForm" class="search" autocomplete="off">
+        <div class="search__field">
+          <input id="cityInput" class="search__input" type="search"
+                 placeholder="Введите город…" aria-label="Название города">
+          <!-- Сюда JS добавляет <li class="suggestions__item"> с подсказками -->
+          <ul id="suggestions" class="suggestions" hidden></ul>
+        </div>
+        <button type="submit" class="btn btn--primary">Найти</button>
+        <button type="button" id="geoBtn" class="btn btn--icon"
+                title="Моё местоположение" aria-label="Моё местоположение">📍</button>
+      </form>
+    </header>
+
+    <!-- ===== История поиска: сюда JS добавляет <li><button class="chip">…</button></li> ===== -->
+    <ul id="history" class="history"></ul>
+
+    <!-- ===== Статус: загрузка / ошибка / подсказка ===== -->
+    <!-- Классы: status--loading  и  status--error  (добавляй и убирай через classList) -->
+    <p id="status" class="status" role="status">Введите город или нажмите 📍, чтобы узнать погоду</p>
+
+    <!-- ===== Результат (скрыт, пока нет данных) ===== -->
+    <section id="weather" class="weather" hidden>
+
+      <!-- Текущая погода -->
+      <article class="card current">
+        <div class="current__top">
+          <div>
+            <h2 id="cityName" class="current__city">Город</h2>
+            <p id="dateText" class="current__date">Понедельник, 1 января</p>
+          </div>
+          <!-- ⭐ Задание со звёздочкой: убери атрибут hidden и сделай переключатель °C / °F -->
+          <button id="unitBtn" class="btn btn--small" type="button" hidden>°C</button>
+        </div>
+
+        <div class="current__main">
+          <span id="weatherIcon" class="current__icon" aria-hidden="true">☀️</span>
+          <div>
+            <p id="temp" class="current__temp">0°</p>
+            <p id="description" class="current__desc">Ясно</p>
+          </div>
+        </div>
+
+        <dl class="details">
+          <div class="detail">
+            <dt>🌡️ Ощущается</dt>
+            <dd id="feelsLike">0°</dd>
+          </div>
+          <div class="detail">
+            <dt>💧 Влажность</dt>
+            <dd id="humidity">0%</dd>
+          </div>
+          <div class="detail">
+            <dt>💨 Ветер</dt>
+            <dd id="wind">0 км/ч</dd>
+          </div>
+          <div class="detail">
+            <dt>🧭 Давление</dt>
+            <dd id="pressure">0 мм рт. ст.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <!-- Прогноз на 5 дней -->
+      <section class="card forecast-card">
+        <h3 class="forecast-card__title">Прогноз на 5 дней</h3>
+        <!-- Сюда JS добавляет карточки дней из <template id="dayTemplate"> -->
+        <div id="forecast" class="forecast"></div>
+      </section>
+
+    </section>
+  </main>
+
+  <footer class="footer">
+    Данные: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>
+  </footer>
+
+  <!-- Шаблон одной карточки дня. Клонируй его: dayTemplate.content.cloneNode(true) -->
+  <template id="dayTemplate">
+    <div class="day">
+      <p class="day__name">Пн</p>
+      <span class="day__icon" aria-hidden="true">☀️</span>
+      <p class="day__temps">
+        <span class="day__max">0°</span>
+        <span class="day__min">0°</span>
+      </p>
+    </div>
+  </template>
+
+  <script src="teacher_js.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
